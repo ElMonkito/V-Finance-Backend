@@ -4,7 +4,7 @@ from expenses.models import Expense, Category
 from expenses.serializers import ExpenseSerializer, CategorySerializer
 
 
-class ExpsensViewSet(viewsets.ModelViewSet):
+class ExpenseViewSet(viewsets.ModelViewSet):
     serializer_class = ExpenseSerializer
     permission_classes = [permissions.IsAuthenticated]
 
