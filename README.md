@@ -35,3 +35,13 @@ DATABASES = {
 ```bash
 python3 manage.py migrate
 ```
+
+### 6. Créer un superuser
+```bash
+python manage.py createsuperuser
+```
+
+### 7. Lancer le serveur
+```bash
+python manage.py runserver
+```
