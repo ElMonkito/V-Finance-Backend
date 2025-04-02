@@ -10,6 +10,8 @@ from expenses.serializers import ExpenseSerializer, CategorySerializer, Register
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.decorators import action
 from django.db.models import Sum
+from django.utils.timezone import now
+
 
 class ExpenseViewSet(viewsets.ModelViewSet):
     serializer_class = ExpenseSerializer
@@ -21,6 +23,16 @@ class ExpenseViewSet(viewsets.ModelViewSet):
     def total(self, request):
         total = self.get_queryset().aggregate(Sum('amount'))['amount__sum'] or 0
         return Response({'total': total})
+
+    @action(detail=False, methods=['get'])
+    def this_month(self, request):
+        today = now()
+        expenses = self.get_queryset().filter(
+            date__year=today.year,
+            date__month=today.month
+        )
+        serializer = self.get_serializer(expenses, many=True)
+        return Response(serializer.data)
 
     def get_queryset(self):
         return Expense.objects.filter(user=self.request.user)
